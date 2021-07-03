@@ -1,4 +1,7 @@
-// Dropdown IDs 
+// Dropdown IDs list with the json key-values "names". This array has all the ID's. 
+// I used .map function to append all the ids to the "option" on the dropwdown. 
+// This is on a function called "optionChanged", its on the index.html already. 
+
 function optionChanged (){
 d3.json("samples.json").then((data) => {
   var subjectId = d3.select("#selDataset"); 
@@ -8,11 +11,13 @@ d3.json("samples.json").then((data) => {
 })
 }
 
-// The event handler, its the dropdown 
+// The dropdown needs an event handler. 
+// This event handler will invoque the function to getData and show all the charts. 
 var subjectId = d3.select("#selDataset");
 // subjectId.on("change",getData); 
 
-// getData function. It will hold all the charts 
+// This getData function will obtain all the data from the JSON and will show all the charts. 
+
 function getData() {
   var subjectId = d3.select("#selDataset");
   var dataset = subjectId.property("value");
