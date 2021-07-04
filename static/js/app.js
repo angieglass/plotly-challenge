@@ -23,11 +23,13 @@ function getData() {
   var dataset = subjectId.property("value");
 
   d3.json("samples.json").then((data) => {
-    console.log(data);
-    // var sample_values = data.samples[0].sample_values;
-    // var otu_ids = data.samples[0].otu_ids;
-    // var otu_labels = data.samples[0].otu_labels;
- 
+    var sample_values = data.samples[0].sample_values.slice(0,10).reverse();
+    var otu_ids = data.samples[0].otu_ids;
+    var otu_labels = data.samples[0].otu_labels.slice(0,10).reverse();;
+    console.log(sample_values);
+    console.log(otu_ids);
+    console.log(otu_labels);
+
 
   })
 }
