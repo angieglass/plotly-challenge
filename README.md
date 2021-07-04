@@ -12,7 +12,7 @@
 
 * Use `otu_labels` as the hovertext for the chart.
 
-  ![bar Chart](Images/hw01.png)
+
 
 3. Create a bubble chart that displays each sample.
 
@@ -26,19 +26,18 @@
 
 * Use `otu_labels` for the text values.
 
-![Bubble Chart](Images/bubble_chart.png)
+
 
 4. Display the sample metadata, i.e., an individual's demographic information.
 
 5. Display each key-value pair from the metadata JSON object somewhere on the page.
 
-![hw](Images/hw03.png)
+
 
 6. Update all of the plots any time that a new sample is selected.
 
 Additionally, you are welcome to create any layout that you would like for your dashboard. An example dashboard is shown below:
 
-![hw](Images/hw02.png)
 
 ## Advanced Challenge Assignment (Optional)
 
@@ -50,5 +49,4 @@ The following task is advanced and therefore optional.
 
 * Update the chart whenever a new sample is selected.
 
-![Weekly Washing Frequency Gauge](Images/gauge.png)
 
