@@ -14,13 +14,12 @@ d3.json("samples.json").then((data) => {
 // The dropdown needs an event handler. 
 // This event handler will invoque the function to getData and show all the charts. 
 var subjectId = d3.select("#selDataset");
-// subjectId.on("change",getData); 
+subjectId.on("change",getData); 
 
 // This getData function will obtain all the data from the JSON and will show all the charts. 
 function getData() {
-  var subjectId = d3.select("#selDataset");
-  var dataset = subjectId.property("value");
-
+  var selected = subjectId.property("value");
+  
   d3.json("samples.json").then((data) => {
     var userId = data.samples[0].id;
     var sample_values = data.samples[0].sample_values.slice(0,10).reverse();
@@ -89,6 +88,7 @@ var dataGauge = [{
   title: { text: "Scrubs per week" },
   type: "indicator",
   mode: "gauge",
+  text: data.metadata[0].wfreq,
   gauge: {
     axis: { range: [null, 9] },
   threshold: {
