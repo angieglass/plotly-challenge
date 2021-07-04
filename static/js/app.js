@@ -28,14 +28,15 @@ function getData() {
     var otu_labels = data.samples[0].otu_labels.slice(0,10);
     var otuIds = otu_ids.map(d => "OTU " + d)
 
+  
     // Checking data 
     // console.log(userId);
     // console.log(sample_values);
     // console.log(otu_ids);
-    // console.log(otu_labels);
+    console.log(otu_labels);
     // console.log(data);
 
-// Create the Trace
+// Create the Trace for the Bar Chart 
     var trace = {
       x: sample_values,
       y: otuIds,
@@ -43,15 +44,39 @@ function getData() {
       orientation: 'h',
       text: otu_labels
     };
-    var data = [trace];
+    var dataBar = [trace];
 
 // Define the plot layout
-var layout = {
+var layoutBar = {
   title: "Top 10 Bacteria Cultures Found",
 };
 
 // Plot the chart to a div tag with id "bar-plot"
-Plotly.newPlot("bar", data, layout);
+Plotly.newPlot("bar", dataBar, layoutBar);
+
+// Create the Trace for the Bubble Chart 
+var trace1 = {
+  x: data.samples[0].otu_ids,
+  y: data.samples[0].sample_values,
+  text: data.samples[0].otu_labels.toString(),
+  mode: 'markers',
+  marker: {
+    color: data.samples[0].otu_ids,
+    colorscale: 'Portland',
+    size: data.samples[0].sample_values
+  }
+};
+var dataBubble = [trace1];
+
+// Define the plot layout
+var layoutBubble = {
+title: "Bacteria Cultures Per Samble",
+
+};
+
+// Plot the chart to a div tag with id "bar-plot"
+Plotly.newPlot("bubble", dataBubble, layoutBubble);
+
 
   })
 }
