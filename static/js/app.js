@@ -1,39 +1,36 @@
-// Dropdown IDs list with the json key-values "names". This array has all the ID's. 
-// I used .map function to append all the ids to the "option" on the dropwdown. 
-// This is on a function called "optionChanged", its on the index.html already. 
 
-function optionChanged (){
+
+function getData (){
 d3.json("samples.json").then((data) => {
+
+  // Creating the dropdown 
   var subjectId = d3.select("#selDataset"); 
   var allIds = data.names; 
   allIds.map(id => {subjectId.append("option").text(id);
-}); 
-})
-}
+});
 
-// The dropdown needs an event handler. 
-// This event handler will invoque the function to getData and show all the charts. 
-var subjectId = d3.select("#selDataset");
-subjectId.on("change",getData); 
+ // Data 
 
-// This getData function will obtain all the data from the JSON and will show all the charts. 
-function getData() {
-  var selected = subjectId.property("value");
+ var metadata = data.metadata; 
+
+  // Event handlers 
+  var subjectId = d3.select("#selDataset");
+  subjectId.on("change",getData); 
+
+  // ID selection 
   
-  d3.json("samples.json").then((data) => {
-    var userId = data.samples[0].id;
-    var sample_values = data.samples[0].sample_values.slice(0,10).reverse();
-    var otu_ids = data.samples[0].otu_ids.slice(0,10);
-    var otu_labels = data.samples[0].otu_labels.slice(0,10);
-    var otuIds = otu_ids.map(d => "OTU " + d)
+  var selection = subjectId.property("value");
 
-  
-    // Checking data 
-    // console.log(userId);
-    // console.log(sample_values);
-    // console.log(otu_ids);
-    // console.log(otu_labels);
-    // console.log(data);
+  // Got help to obtain this line. 
+  var selected = data.names.indexOf(selection);
+
+  // Obtaining the data from "samples"
+
+  var sample_values = data.samples[selected].sample_values.slice(0,10).reverse();
+  var otu_ids = data.samples[selected].otu_ids.slice(0,10);
+  var otu_labels = data.samples[selected].otu_labels.slice(0,10);
+  var otuIds = otu_ids.map(d => "OTU " + d)
+
 
 // Create the Trace for the Bar Chart 
     var trace = {
@@ -57,14 +54,14 @@ Plotly.newPlot("bar", dataBar, layoutBar);
 // ------------------------------------------------- 
 // Create the Trace for the Bubble Chart 
 var trace1 = {
-  x: data.samples[0].otu_ids,
-  y: data.samples[0].sample_values,
-  text: data.samples[0].otu_labels.toString(),
+  x: otu_ids,
+  y: sample_values,
+  text: sample_values.toString(),
   mode: 'markers',
   marker: {
-    color: data.samples[0].otu_ids,
+    color: otu_ids,
     colorscale: 'Portland',
-    size: data.samples[0].sample_values
+    size: sample_values
   }
 };
 var dataBubble = [trace1];
@@ -80,21 +77,34 @@ xaxis: {title: "OTU ID"}
 // Plot the chart to a div tag with id "bubble"
 Plotly.newPlot("bubble", dataBubble, layoutBubble);
 
+
+// Table 
+var sampleMetadata = d3.select("#sample-metadata"); 
+sampleMetadata.html("");
+var tableID = metadata.find(element => element.id == selection);
+Object.entries(tableID).find(([key, value]) => {
+  sampleMetadata.append("p").text(`${key}: ${value}`);
+  })
+
+console.log(metadata.wfreq); 
+
+
+
 // Create the Trace for the Gauge Chart 
 
 var dataGauge = [{
   domain: { x: [0, 1], y: [0, 1] },
-  value: data.metadata[0].wfreq,
+  value: metadata.wfreq,
   title: { text: "Scrubs per week" },
   type: "indicator",
   mode: "gauge",
-  text: data.metadata[0].wfreq,
+  text: metadata.wfreq,
   gauge: {
     axis: { range: [null, 9] },
   threshold: {
       line: { color: "#8B008B", width: 5 },
       thickness: 0.75,
-      value: data.metadata[0].wfreq},
+      value: metadata.wfreq},
   steps: [
     { range: [0, 9], color: "#DCDCDC" },
     { range: [1, 2], color: "#DCDCDC" },
@@ -118,19 +128,7 @@ titlefont: {size: 24},
 // Plot the chart to a div tag with id "bubble"
 Plotly.newPlot("gauge", dataGauge, layoutBubble);
 
-  })
-}
 
-
-// Obtain the medadata
-function demographics (){
-  d3.json("samples.json").then((data) => {
-    var metadata = data.metadata[0]; 
-    console.log(metadata); 
-  })
-}; 
-
-// Run function 
-demographics();
+});
+} 
 getData();
-optionChanged(); 
