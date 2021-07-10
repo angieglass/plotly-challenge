@@ -1,5 +1,5 @@
 # Plot.ly Homework - Belly Button Biodiversity
-
+(https://github.com/angieglass/plotly-challenge/blob/main/static/images/dashboard.png)
 ## Step 1: Plotly
 
 1. Use the D3 library to read in `samples.json`.
