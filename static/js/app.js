@@ -2,12 +2,24 @@
 
 function getData (){
 d3.json("samples.json").then((data) => {
-
+  console.log(data);
   // Creating the dropdown 
   var subjectId = d3.select("#selDataset"); 
   var allIds = data.names; 
-  allIds.map(id => {subjectId.append("option").text(id);
+
+ // Exercise with tutor 
+ //  var freq = data.metadata; 
+ //  console.log(freq);
+//  freq.forEach((id)=>{
+//   let washing = id.wfreq
+//   console.log(washing)});
+
+allIds.map(id => {subjectId.append("option").text(id);
 });
+
+//Exercise with tutor .forEach same as .map() 
+// allIds.forEach((id)=>{
+//   subjectId.append("option").text(id)});
 
  // Data 
 
@@ -24,6 +36,7 @@ d3.json("samples.json").then((data) => {
   // Got help to obtain this line. 
   var selected = data.names.indexOf(selection);
 
+ // Check this function--> var selected = data.filter(id => id.id == selection);
   // Obtaining the data from "samples"
 
   var sample_values = data.samples[selected].sample_values.slice(0,10).reverse();
@@ -86,25 +99,27 @@ Object.entries(tableID).find(([key, value]) => {
   sampleMetadata.append("p").text(`${key}: ${value}`);
   })
 
-console.log(metadata.wfreq); 
 
+// Exercise with tutor ---> use of .filter() 
 
+var metadataArr = metadata.filter(id => id.id == selection)[0];
+console.log(metadataArr.wfreq);
 
 // Create the Trace for the Gauge Chart 
 
 var dataGauge = [{
   domain: { x: [0, 1], y: [0, 1] },
-  value: metadata.wfreq,
+  value: metadataArr.wfreq,
   title: { text: "Scrubs per week" },
   type: "indicator",
   mode: "gauge",
-  text: metadata.wfreq,
+  text: metadataArr.wfreq,
   gauge: {
     axis: { range: [null, 9] },
   threshold: {
       line: { color: "#8B008B", width: 5 },
       thickness: 0.75,
-      value: metadata.wfreq},
+      value: metadataArr.wfreq},
   steps: [
     { range: [0, 9], color: "#DCDCDC" },
     { range: [1, 2], color: "#DCDCDC" },
